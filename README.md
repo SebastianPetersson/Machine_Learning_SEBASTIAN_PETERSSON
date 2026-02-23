@@ -11,8 +11,8 @@ Course Flow
 
 
 Resources
-Based on the course material and the Hands‑On Machine Learning companion repository, with notebooks runnable in Colab and Kaggle.
+Based on the course material and the Hands‑On Machine Learning companion repository.
 
-This is going to be a deep dive for me, and I'm excited for it! 
+This is going to be a deep dive for me, and I'm excited for it! Besides the course work, you might also find some experiments of my own in here, time will tell.
 
 //Sebastian
