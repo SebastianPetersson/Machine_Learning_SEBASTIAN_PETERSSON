@@ -207,4 +207,14 @@ marimo/_lsp/
 __marimo__/
 
 housing.csv
+#Digital kopia av Hands-On Machine Learning with Scikit
 Aurélien Geron - Hands-On Machine Learning with Scikit-Learn and PyTorch Concepts, Tools, and Techniques to Build Intelligent Systems (2025, O’Reilly) - libgen.li
+
+# Dataset för Laboration 1 - nedladdat från movielens.
+ml-latest
+genome-scores.csv
+genome-tags.csv
+links.csv
+movies.csv
+ratings.csv
+tags.csv
