@@ -15,7 +15,7 @@ def build_knn_model(item_user_matrix):
     return model
 
 def recommend_item_based_movies(movies, item_user_matrix, movie_to_idx, idx_to_movie, model, n=5):
-    movie_title = input("Vilken film vill du se? ").strip()
+    movie_title = input("What movie would you like to watch? ").strip()
     clean_query = clean_text(movie_title)
 
     movie_match = movies[
@@ -23,26 +23,26 @@ def recommend_item_based_movies(movies, item_user_matrix, movie_to_idx, idx_to_m
     ]
 
     if movie_match.empty:
-        print("Filmen hittades inte. Kontrollera stavningen eller välj en annan film.")
+        print("Movie could not be found. Check the spelling or choose a different movie.")
         return
 
     if len(movie_match) > 1:
-        print("Flera filmer matchade din sökning:")
+        print("Several movies matched your search:")
 
         movie_options = movie_match[["movieId", "title", "genres"]].reset_index(drop=True)
         movie_options.index = movie_options.index + 1
         print(movie_options[["title", "genres"]])
 
-        choice = input("Välj film genom att skriva numret: ")
+        choice = input("Select a movie by entering the number: ")
 
         try:
             choice = int(choice)
         except ValueError:
-            print("Fel inmatning, skriv siffran för filmen du vill välja.")
+            print("Invalid input. Enter the number for the movie you want to choose.")
             return
         
         if choice < 1 or choice > len(movie_options):
-            print("Ogiltigt val.")
+            print("Invalid choice.")
             return
 
         chosen_movie_id = movie_options.iloc[choice - 1]["movieId"]
@@ -53,7 +53,7 @@ def recommend_item_based_movies(movies, item_user_matrix, movie_to_idx, idx_to_m
         chosen_title = movie_match.iloc[0]["title"]
 
     if chosen_movie_id not in movie_to_idx:
-        print("Filmen finns i movies.csv men inte i den filtrerade ratings-datan.")
+        print("The movie exists in movies.csv but not in the filtered ratings data.")
         return
         
     movie_idx = movie_to_idx[chosen_movie_id]
@@ -75,7 +75,7 @@ def recommend_item_based_movies(movies, item_user_matrix, movie_to_idx, idx_to_m
     recommendations = recommendations.sort_values("distance")
     recommendations["similarity"] = 1 - recommendations["distance"]
 
-    print(f"\nOm du gillar '{chosen_title}' kanske du också gillar:")
+    print(f"\nIf you like '{chosen_title}', you may also like:")
     print(recommendations[["title", "genres", "similarity"]])
 
     return recommendations
@@ -92,8 +92,8 @@ def main():
         recommend_item_based_movies(
             movies, item_user_matrix, movie_to_idx, idx_to_movie, model
         )
-        again = input("Vill du söka igen? (ja/nej): ").strip().lower()
-        if again != "ja":
+        again = input("Do you want to search again? (yes/no): ").strip().lower()
+        if again != "yes":
             break
 
 
