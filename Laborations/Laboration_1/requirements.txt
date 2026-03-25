@@ -1,0 +1,8 @@
+dash
+joblib
+numpy
+pandas
+python-dotenv
+requests
+scikit-learn
+scipy
