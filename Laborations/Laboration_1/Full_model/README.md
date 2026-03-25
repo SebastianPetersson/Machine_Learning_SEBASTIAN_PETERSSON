@@ -1,6 +1,6 @@
 # Movie recommender - hybrid model (content + collaborative)
 
-## To Run The Hybrid Movie App Locally
+## To Run The Movie App Locally
 
 This project can be run locally without any Dash server account.
 
