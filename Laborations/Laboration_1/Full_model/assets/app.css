@@ -1,0 +1,264 @@
+:root {
+    --page-bg: #050505;
+    --surface-bg: #101010;
+    --surface-gradient: linear-gradient(180deg, #181818 0%, #0d0d0d 100%);
+    --card-gradient: linear-gradient(180deg, #191919 0%, #111111 100%);
+    --poster-fallback: linear-gradient(180deg, #252525 0%, #171717 100%);
+    --text-primary: #f7f1e8;
+    --text-muted: #b8af9f;
+    --text-note: #8d8579;
+    --accent: #c9a86a;
+    --border: #2a2a2a;
+    --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.35);
+    --shadow-md: 0 16px 36px rgba(0, 0, 0, 0.26);
+}
+
+html,
+body,
+#react-entry-point {
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    background: var(--page-bg);
+    color: var(--text-primary);
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.app-shell {
+    max-width: 1120px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 3.2rem 1.4rem 4rem;
+    background-color: var(--page-bg);
+    color: var(--text-primary);
+}
+
+.hero {
+    margin-bottom: 2.2rem;
+}
+
+.hero-eyebrow {
+    margin: 0 0 0.9rem;
+    color: var(--accent);
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+}
+
+.hero-title {
+    margin: 0;
+    color: var(--text-primary);
+    font-family: Baskerville, Georgia, "Times New Roman", serif;
+    font-size: clamp(3rem, 8vw, 5.4rem);
+    font-weight: 700;
+    line-height: 0.92;
+}
+
+.hero-description {
+    max-width: 42rem;
+    margin: 1.1rem 0 0;
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+.search-panel {
+    margin-bottom: 2.5rem;
+    padding: 1.3rem;
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    background: var(--surface-gradient);
+    box-shadow: var(--shadow-lg);
+}
+
+.search-label {
+    margin: 0 0 0.8rem;
+    color: var(--accent);
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+.movie-dropdown {
+    color: #0000003d;
+}
+
+.movie-dropdown .Select-control,
+.movie-dropdown .Select__control {
+    min-height: 52px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: #f7f1e8;
+    box-shadow: none;
+}
+
+.movie-dropdown .Select-placeholder,
+.movie-dropdown .Select--single > .Select-control .Select-value,
+.movie-dropdown .Select-value-label,
+.movie-dropdown .Select__placeholder {
+    color: #0000004a
+}
+.movie-dropdown .Select__single-value,
+.movie-dropdown .Select input,
+.movie-dropdown .Select__input-container {
+    color: #111111;
+}
+
+.movie-dropdown .Select-menu-outer,
+.movie-dropdown .Select__menu {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: #f7f1e8;
+    color: #111111;
+    overflow: hidden;
+}
+
+.movie-dropdown .Select-option,
+.movie-dropdown .Select__option {
+    padding-top: 0.85rem;
+    padding-bottom: 0.85rem;
+}
+
+.movie-dropdown .Select-option.is-focused,
+.movie-dropdown .Select__option--is-focused {
+    background: #ece1cd;
+}
+
+.message-panel {
+    padding: 1.1rem 1.2rem;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background-color: var(--surface-bg);
+    color: var(--text-muted);
+}
+
+.results-shell {
+    min-height: 1px;
+}
+
+.results-header {
+    margin-bottom: 1.3rem;
+}
+
+.results-eyebrow {
+    margin: 0 0 0.45rem;
+    color: var(--accent);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.results-title {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 2rem;
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(220px, 1fr));
+    gap: 1.2rem;
+}
+
+.movie-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--card-gradient);
+    box-shadow: var(--shadow-md);
+}
+
+.movie-card-poster,
+.movie-card-poster-placeholder {
+    display: block;
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    border-radius: 14px;
+}
+
+.movie-card-poster {
+    object-fit: cover;
+    background-color: #222222;
+}
+
+.movie-card-poster-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--poster-fallback);
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.movie-card-copy {
+    min-height: 5.5rem;
+}
+
+.movie-card-title {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 1.15rem;
+    line-height: 1.35;
+}
+
+.movie-card-genres {
+    margin: 0.55rem 0 0;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.5;
+}
+
+.movie-card-score {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--border);
+}
+
+.movie-card-score-label {
+    color: var(--accent);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.movie-card-score-value {
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.tmdb-note {
+    margin-top: 1.75rem;
+    color: var(--text-note);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+    .app-shell {
+        padding: 2.2rem 1rem 3rem;
+    }
+
+    .search-panel {
+        padding: 1rem;
+    }
+
+    .results-grid {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+}
