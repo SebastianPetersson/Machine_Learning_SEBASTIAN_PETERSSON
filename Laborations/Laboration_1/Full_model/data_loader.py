@@ -8,6 +8,7 @@ DATA_DIR = BASE_DIR / "ml-latest"
 
 @lru_cache(maxsize=1)
 def load_ratings():
+    """Loads rating dataset, returns columns 'userId', 'movieId', 'rating'."""
     return pd.read_csv(
         DATA_DIR / "ratings.csv",
         usecols=["userId", "movieId", "rating"]
@@ -16,6 +17,7 @@ def load_ratings():
 
 @lru_cache(maxsize=1)
 def load_links():
+    """Loads links dataset, returns columns 'movieId', 'imdbId', 'tmdbId'."""
     return pd.read_csv(
         DATA_DIR / "links.csv",
         usecols=["movieId", "imdbId", "tmdbId"]
@@ -24,6 +26,8 @@ def load_links():
 
 @lru_cache(maxsize=1)
 def load_movies():
+    """Loads movies dataset, drops duplicates, replaces NaN values in columns 'title' and 'genres' 
+    with empty .str and returns movies as dataframe."""
     movies = pd.read_csv(
         DATA_DIR / "movies.csv",
         usecols=["movieId", "title", "genres"],
@@ -36,6 +40,8 @@ def load_movies():
 
 @lru_cache(maxsize=1)
 def load_tags():
+    """Loads tags dataset, selects columns 'movieId' and 'tag'. dropna in 'tag' and makes it a lowercase str. Drops duplicates in both
+    columns and returns cleaned tags dataframe."""
     tags = pd.read_csv(
         DATA_DIR / "tags.csv",
         usecols=["movieId", "tag"],
