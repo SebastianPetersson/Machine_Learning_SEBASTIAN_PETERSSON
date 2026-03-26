@@ -17,13 +17,14 @@ from hybrid_model import recommend_hybrid_by_movie_id
 
 def build_eval_artifacts():
     hybrid_features = load_or_build_hybrid_feature_table()
-    _, tfidf_matrix = load_or_build_tfidf_artifacts(hybrid_features)
+    _, tfidf_matrix, movie_to_row_idx = load_or_build_tfidf_artifacts(hybrid_features)
     knn_model, item_user_matrix, movie_to_idx, idx_to_movie = load_or_build_knn_artifacts()
     ratings = load_ratings()
 
     return {
         "hybrid_features": hybrid_features,
         "tfidf_matrix": tfidf_matrix,
+        "movie_to_row_idx": movie_to_row_idx,
         "knn_model": knn_model,
         "item_user_matrix": item_user_matrix,
         "movie_to_idx": movie_to_idx,
@@ -100,6 +101,7 @@ def ndcg_at_k(recommended_ids, relevant_ids, k=5):
 def evaluate_ndcg_at_5(test_cases,
                        hybrid_features,
                        tfidf_matrix,
+                       movie_to_row_idx,
                        item_user_matrix,
                        movie_to_idx,
                        idx_to_movie,
@@ -120,6 +122,7 @@ def evaluate_ndcg_at_5(test_cases,
             movie_id=row["query_movie"],
             hybrid_features=hybrid_features,
             tfidf_matrix=tfidf_matrix,
+            movie_to_row_idx=movie_to_row_idx,
             item_user_matrix=item_user_matrix,
             movie_to_idx=movie_to_idx,
             idx_to_movie=idx_to_movie,
@@ -148,6 +151,7 @@ def compare_weight_configs(configs, test_cases, artifacts):
             test_cases=test_cases,
             hybrid_features=artifacts["hybrid_features"],
             tfidf_matrix=artifacts["tfidf_matrix"],
+            movie_to_row_idx=artifacts["movie_to_row_idx"],
             item_user_matrix=artifacts["item_user_matrix"],
             movie_to_idx=artifacts["movie_to_idx"],
             idx_to_movie=artifacts["idx_to_movie"],
