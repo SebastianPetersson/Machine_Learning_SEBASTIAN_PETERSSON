@@ -106,11 +106,12 @@ def evaluate_ndcg_at_5(test_cases,
                        movie_to_idx,
                        idx_to_movie,
                        knn_model,
-                       collab_weight=0.3,
-                       content_weight=0.45,
+                       collab_weight=0.4,
+                       content_weight=0.35,
                        rating_weight=0.1,
                        expert_weight=0.1,
                        new_expert_weight=0.05,
+                       popularity_weight=0.1,
                        progress_every=10):
     scores = []
 
@@ -132,7 +133,8 @@ def evaluate_ndcg_at_5(test_cases,
             content_weight=content_weight,
             rating_weight=rating_weight,
             expert_weight=expert_weight,
-            new_expert_weight=new_expert_weight
+            new_expert_weight=new_expert_weight,
+            popularity_weight=popularity_weight,
         )
 
         recommended_ids = recommendations["movieId"].tolist()
@@ -161,11 +163,13 @@ def compare_weight_configs(configs, test_cases, artifacts):
             rating_weight=config["rating_weight"],
             expert_weight=config["expert_weight"],
             new_expert_weight=config["new_expert_weight"],
+            popularity_weight=config.get("popularity_weight", 0.0),
             progress_every=config.get("progress_every", 10),
         )
 
         results.append({
             **config,
+            "popularity_weight": config.get("popularity_weight", 0.0),
             "ndcg_at_5": score,
         })
 

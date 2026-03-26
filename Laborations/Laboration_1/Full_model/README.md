@@ -56,7 +56,7 @@ The following files are used:
 - `links.csv`
 - `tags.csv`
 
-If the dataset is not already included, place the `ml-latest` folder directly inside `Laboration_1`, not inside `Hybrid_model`.
+If the dataset is not already included, place the `ml-latest` folder directly inside `Laboration_1`, not inside `Full_model`.
 
 ### 5. Start the app
 
@@ -76,4 +76,4 @@ http://127.0.0.1:8050
 
 - The first recommendation request can be slower because model artifacts may need to be loaded or rebuilt.
 - `requirements.txt` in `Laboration_1` is the local run dependency file.
-- `Hybrid_model/Procfile` was added for possible deployment, but is not needed for local use.
+- `Full_model/Procfile` was added for possible deployment, but is not needed for local use.

@@ -6,6 +6,15 @@ from collaborative_model import load_or_build_knn_artifacts
 from hybrid_model import recommend_hybrid_by_movie_id
 from poster_utils import get_poster_url
 
+FINAL_MODEL_WEIGHTS = {
+    "collab_weight": 0.4,
+    "content_weight": 0.35,
+    "rating_weight": 0.1,
+    "expert_weight": 0.1,
+    "new_expert_weight": 0.05,
+    "popularity_weight": 0.1,
+}
+
 @lru_cache(maxsize=1)
 def load_search_artifacts():
     hybrid_features = load_or_build_hybrid_feature_table()
@@ -77,7 +86,9 @@ def recommend_for_movie_id(movie_id, n=5):
         movie_to_row_idx=artifacts["movie_to_row_idx"],
         idx_to_movie=artifacts["idx_to_movie"],
         knn_model=artifacts["knn_model"],
-        n=n,).copy()
+        n=n,
+        **FINAL_MODEL_WEIGHTS,
+    ).copy()
         
     if "tmdbId" in recommendations.columns:
         recommendations["poster_url"] = recommendations["tmdbId"].apply(get_poster_url)
