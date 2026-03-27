@@ -13,6 +13,7 @@ TFIDF_ARTIFACTS_PATH = CACHE_DIR / "tfidf_artifacts.joblib"
 
 
 def build_tfidf_matrix(hybrid_features):
+    """Uses TfidsVectorizer to build a tfidf_matrix, uses fit_transform on column 'text_features'."""
     tfidf = TfidfVectorizer(
         stop_words = "english",
         token_pattern = r"(?u)\b[a-zA-Z][a-zA-Z]+\b",
@@ -26,6 +27,8 @@ def build_tfidf_matrix(hybrid_features):
     return tfidf, tfidf_matrix
 
 def resolve_movie_query(movie_query, hybrid_features):
+    """Find movies whose cleaned titles match a text query."""
+
     clean_query = clean_text(movie_query)
 
     movie_match = hybrid_features[
@@ -35,6 +38,8 @@ def resolve_movie_query(movie_query, hybrid_features):
     return movie_match
 
 def get_content_candidates(movie_id, hybrid_features, tfidf_matrix, movie_to_row_idx, n=30):
+    """Return the top-N content-based candidate movies for a given movie ID."""
+
     movie_index = movie_to_row_idx.get(movie_id)
 
     if movie_index is None:
@@ -63,6 +68,7 @@ def get_content_candidates(movie_id, hybrid_features, tfidf_matrix, movie_to_row
     return candidates
 
 def load_or_build_tfidf_artifacts(hybrid_features, force_rebuild=False):
+    """Load saved TF-IDF artifacts or build and save them if needed."""
     if TFIDF_ARTIFACTS_PATH.exists() and not force_rebuild:
         artifacts = load(TFIDF_ARTIFACTS_PATH)
         return (
@@ -83,6 +89,7 @@ def load_or_build_tfidf_artifacts(hybrid_features, force_rebuild=False):
     return tfidf, tfidf_matrix, movie_to_row_idx
 
 def build_movie_to_row_idx(hybrid_features):
+    """Build a mapping from movie IDs to row indices in the feature table."""
     return {
         movie_id: row_idx
         for row_idx, movie_id in enumerate(hybrid_features["movieId"].tolist())
