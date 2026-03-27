@@ -1,6 +1,6 @@
 from dash import Dash, Input, Output, callback, dcc, html, no_update
 
-from app_backend import get_dropdown_options, recommend_for_movie_id
+from app_backend import get_dropdown_options, recommend_for_movie_id, load_search_artifacts, load_recommendation_artifacts
 
 app = Dash(__name__)
 server = app.server
@@ -35,7 +35,13 @@ app.layout = html.Div(
             ],
             className="search-panel",
         ),
-        html.Div(id="recommendation-results", className="results-shell"),
+        dcc.Loading(
+            id="recommendation-loading",
+            type="circle",
+            color="#6D280A",
+            fullscreen=False,
+            children=html.Div(id="recommendation-results", className="results-shell")
+        ),
     ],
     className="app-shell",
 )
@@ -132,4 +138,9 @@ def show_recommendations(selected_movie_id):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    print("Loading and cacheing search artifacts. Please hold.")
+    load_search_artifacts()
+    print("Loading and cacheing recommendation artifacts. Please hold.")
+    load_recommendation_artifacts()
+    print("The app is now live, follow the link below and get started searching for new movies to watch!")
+    app.run(debug=False)
