@@ -11,7 +11,7 @@ KNN_ARTIFACTS_PATH = CACHE_DIR / "knn_artifacts.joblib"
 
 
 def build_knn_model(min_user_ratings=50, min_movie_ratings=50):
-
+    """Build a KNN model and collaborative filtering artifacts from ratings data."""
     ratings_filtered = filter_ratings(min_user_ratings, min_movie_ratings)
 
     item_user_matrix, movie_to_idx, _ = build_item_user_matrix(ratings_filtered)
@@ -23,6 +23,7 @@ def build_knn_model(min_user_ratings=50, min_movie_ratings=50):
     return model, item_user_matrix, movie_to_idx, idx_to_movie
 
 def resolve_movie_query(movie_query, movies):
+    """Return movies whose normalized titles contain the query string."""
     clean_query = clean_text(movie_query)
 
     movie_match = movies[
@@ -32,6 +33,7 @@ def resolve_movie_query(movie_query, movies):
     return movie_match
 
 def get_collaborative_candidates(movie_id, item_user_matrix, movie_to_idx, idx_to_movie, model, n=30):
+    """Return the top-N collaborative filtering candidate movies for a given movie ID."""
     if movie_id not in movie_to_idx:
         return pd.DataFrame(columns = ["movieId", "collaborative_score"])
     
@@ -55,6 +57,7 @@ def get_collaborative_candidates(movie_id, item_user_matrix, movie_to_idx, idx_t
     return candidates
 
 def load_or_build_knn_artifacts(min_user_ratings=50, min_movie_ratings=50, force_rebuild=False):
+    """Load saved KNN artifacts or build and save them."""
     if KNN_ARTIFACTS_PATH.exists() and not force_rebuild:
         artifacts = load(KNN_ARTIFACTS_PATH)
         return (
