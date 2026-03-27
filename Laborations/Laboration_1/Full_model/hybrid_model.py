@@ -12,6 +12,7 @@ POPULARITY_GROUP_SCORES = {
 }
 
 def normalize_scores(series):
+    """Normalize a score series to the range 0-1. Uses MinMaxScaler for scaling."""
     if series.empty:
         return pd.Series(index=series.index, dtype=float)
 
@@ -29,6 +30,7 @@ def build_candidate_table(movie_id,
                           movie_to_idx,
                           idx_to_movie,
                           knn_model):
+    """Build a merged candidate table from content-based and collaborative recommendations."""
     
     content_candidates = get_content_candidates(movie_id, hybrid_features, tfidf_matrix, movie_to_row_idx, n=20)
     collaborative_candidates = get_collaborative_candidates(movie_id, item_user_matrix, movie_to_idx, idx_to_movie, knn_model, n=20)
@@ -49,6 +51,7 @@ def rank_candidates(candidates,
                     expert_weight = 0.1,
                     new_expert_weight = 0.05,
                     popularity_weight = 0.1):
+    """Rank recommendation candidates using weighted hybrid scoring."""
     
     candidates = candidates.copy()
 
@@ -94,6 +97,7 @@ def recommend_hybrid_by_movie_id(movie_id,
                                  expert_weight=0.1,
                                  new_expert_weight=0.05,
                                  popularity_weight=0.1):
+    """Return top-N hybrid movie recommendations for a given movie ID."""
 
     candidates = build_candidate_table(
         movie_id,
