@@ -12,12 +12,16 @@ CACHE_DIR.mkdir(exist_ok=True)
 HYBRID_FEATURES_PATH = CACHE_DIR / "hybrid_features.joblib"
 
 def clean_text(text):
+    """Does a basic clean of the input text, .lower, .sub and .strip."""
     text = str(text).lower()
     text = re.sub(r"[^a-z0-9\s]", "", text)
     text = re.sub(r"\s+", " ", text).strip()
     return text
 
 def prepare_movies_for_search(movies):
+    """Prepare a movies Dataframe for title-based searches.
+    
+    Splits title-column into 'release_year' and 'title_clean'."""
     movies = movies.copy()
     movies["release_year"] = movies["title"].str.extract(r"\((\d{4})\)$")
     movies["release_year"] = pd.to_numeric(movies["release_year"], errors="coerce")
@@ -33,6 +37,9 @@ def prepare_movies_for_search(movies):
 
 @lru_cache(maxsize=1)
 def prepare_movies_with_tags_and_links():
+    """Loads and prepares movies with prepare_movies_for_search, loads tags and links. 
+    Applies title processing through prepare_movies_for_search, cleans genre text, aggregates tags per movie, 
+    merges movies with tags and links. Creates movies_full including new column text_features and returns movies_full."""
     movies = prepare_movies_for_search(load_movies())
     tags = load_tags().copy()
     links = load_links().copy()
@@ -65,6 +72,20 @@ def prepare_movies_with_tags_and_links():
     return movies_full
 
 def filter_ratings(min_user_ratings=50, min_movie_ratings=50):
+    """
+    Filter ratings to keep only active users and frequently rated movies.
+
+    Users with fewer than `min_user_ratings` ratings are removed first.
+    Then movies with fewer than `min_movie_ratings` ratings are removed
+    from the remaining dataset.
+
+    Args:
+        min_user_ratings (int): Minimum number of ratings a user must have.
+        min_movie_ratings (int): Minimum number of ratings a movie must have.
+
+    Returns:
+        pd.DataFrame: A filtered ratings DataFrame.
+    """
     ratings = load_ratings().copy()
 
     active_users = ratings["userId"].value_counts()
@@ -80,6 +101,10 @@ def filter_ratings(min_user_ratings=50, min_movie_ratings=50):
     return ratings_filtered
 
 def build_item_user_matrix(ratings_filtered):
+    """Build a sparse item-user matrix and index mappings from filtered ratings.
+    Returns:
+        item_user_matrix, movie_to_idx, user_to_idx"""
+
     movie_ids = ratings_filtered["movieId"].unique()
     user_ids = ratings_filtered["userId"].unique()
 
@@ -98,6 +123,8 @@ def build_item_user_matrix(ratings_filtered):
     return item_user_matrix, movie_to_idx, user_to_idx
 
 def build_user_activity_stats(ratings):
+    """Build user activity statistics with rating count and mean rating per user."""
+
     user_activity_stats = (
         ratings.groupby("userId")
         .agg(
@@ -110,6 +137,8 @@ def build_user_activity_stats(ratings):
     return user_activity_stats
 
 def create_user_activity_groups(user_activity_stats):
+    """Group users into low, medium, high, and expert activity levels by rating count percentiles."""
+
     q50 = user_activity_stats["rating_count"].quantile(0.50)
     q90 = user_activity_stats["rating_count"].quantile(0.90)
     q99 = user_activity_stats["rating_count"].quantile(0.99)
@@ -140,6 +169,8 @@ def create_user_activity_groups(user_activity_stats):
     }
 
 def build_movie_stats(ratings):
+    """Build movie statistics with rating count and average rating per movie."""
+
     movie_stats = (
         ratings.groupby("movieId")
         .agg(
@@ -152,6 +183,8 @@ def build_movie_stats(ratings):
     return movie_stats
 
 def create_movie_popularity_groups(movie_stats):
+    """Group movies into popularity levels based on rating count percentiles."""
+
     q50 = movie_stats["rating_count"].quantile(0.50)
     q90 = movie_stats["rating_count"].quantile(0.90)
     q99 = movie_stats["rating_count"].quantile(0.99)
@@ -182,6 +215,8 @@ def create_movie_popularity_groups(movie_stats):
     }
 
 def build_expert_movie_stats(ratings, user_groups):
+    """Build per-movie rating statistics from ratings made by expert users."""
+
     expert_users = user_groups["expert"]
 
     expert_ratings = ratings[ratings["userId"].isin(expert_users)].copy()
@@ -198,6 +233,18 @@ def build_expert_movie_stats(ratings, user_groups):
     return expert_movie_stats
 
 def build_hybrid_feature_table():
+    """
+    Build a hybrid movie feature table by combining metadata and rating statistics.
+
+    Merges movie metadata, tags, and links with rating-based features such as
+    rating count, average rating, expert-user statistics, and popularity group.
+    Missing rating-related values are filled with defaults.
+
+    Returns:
+        pd.DataFrame: A DataFrame containing movie metadata together with
+        hybrid features for recommendation or analysis.
+    """
+
     movies_full = prepare_movies_with_tags_and_links()
     ratings_filtered = filter_ratings()
 
@@ -237,6 +284,8 @@ def build_hybrid_feature_table():
     return hybrid_features
 
 def load_or_build_hybrid_feature_table(force_rebuild=False):
+    """Load a saved hybrid feature table or build and save it if needed."""
+
     if HYBRID_FEATURES_PATH.exists() and not force_rebuild:
         return load(HYBRID_FEATURES_PATH)
 
