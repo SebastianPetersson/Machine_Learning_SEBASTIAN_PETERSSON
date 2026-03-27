@@ -16,6 +16,8 @@ from hybrid_model import recommend_hybrid_by_movie_id
 
 
 def build_eval_artifacts():
+    """Load the artifacts and ratings needed for evaluation."""
+
     hybrid_features = load_or_build_hybrid_feature_table()
     _, tfidf_matrix, movie_to_row_idx = load_or_build_tfidf_artifacts(hybrid_features)
     knn_model, item_user_matrix, movie_to_idx, idx_to_movie = load_or_build_knn_artifacts()
@@ -34,6 +36,7 @@ def build_eval_artifacts():
 
 
 def create_test_cases(ratings, movie_to_idx, min_positive_movies=5, n_users=50, seed=42):
+    """Create evaluation test cases from users with enough positive ratings."""
     positive_ratings = ratings[ratings["rating"] >= 4.0].copy()
 
     user_counts = positive_ratings.groupby("userId")["movieId"].nunique()
@@ -73,6 +76,7 @@ def create_test_cases(ratings, movie_to_idx, min_positive_movies=5, n_users=50, 
 
 
 def dcg_at_k(relevances, k=5):
+    """Computes DCG at rank k from a list of relevance scores."""
     relevances = np.asarray(relevances, dtype=float)[:k]
     if len(relevances) == 0:
         return 0.0
@@ -82,6 +86,7 @@ def dcg_at_k(relevances, k=5):
 
 
 def ndcg_at_k(recommended_ids, relevant_ids, k=5):
+    """Compute NDCG at rank k for recommended and relevant movie IDs."""
     relevances = [1.0 if movie_id in relevant_ids else 0.0 for movie_id in recommended_ids[:k]]
     dcg = dcg_at_k(relevances, k=k)
 
@@ -113,6 +118,7 @@ def evaluate_ndcg_at_5(test_cases,
                        new_expert_weight=0.05,
                        popularity_weight=0.1,
                        progress_every=10):
+    """Evaluate the hybrid recommender using mean NDCG@5."""
     scores = []
 
     for i, (_, row) in enumerate(test_cases.iterrows(), start=1):
@@ -145,6 +151,7 @@ def evaluate_ndcg_at_5(test_cases,
 
 
 def compare_weight_configs(configs, test_cases, artifacts):
+    """Compare multiple weight configurations using the NDCG@5 function."""
     results = []
 
     for config in configs:

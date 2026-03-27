@@ -17,6 +17,7 @@ FINAL_MODEL_WEIGHTS = {
 
 @lru_cache(maxsize=1)
 def load_search_artifacts():
+    """Load and cache the data needed for movie search. Only loads hybrid features for quicker initial search functionality."""
     hybrid_features = load_or_build_hybrid_feature_table()
 
     return {
@@ -25,6 +26,7 @@ def load_search_artifacts():
 
 @lru_cache(maxsize=1)
 def load_recommendation_artifacts():
+    """Load and cache the artifacts needed for movie recommendations."""
     hybrid_features = load_or_build_hybrid_feature_table()
     _, tfidf_matrix, movie_to_row_idx = load_or_build_tfidf_artifacts(hybrid_features)
     knn_model, item_user_matrix, movie_to_idx, idx_to_movie = load_or_build_knn_artifacts()
@@ -40,6 +42,7 @@ def load_recommendation_artifacts():
     }
 
 def search_movies(query, limit=20):
+    """Search fro movies matching a text query."""
     query = str(query).strip()
     if not query:
         return pd.DataFrame(columns=["movieId", "title", "genres", "release_year", "tmdbId"])
@@ -58,6 +61,7 @@ def search_movies(query, limit=20):
     return matches[available_cols].head(limit).reset_index(drop=True)
 
 def get_dropdown_options(query, limit=10):
+    """Build dropdown options from the movie search results."""
     matches = search_movies(query, limit=limit)
 
     options = []
@@ -75,6 +79,7 @@ def get_dropdown_options(query, limit=10):
     return options
     
 def recommend_for_movie_id(movie_id, n=5):
+    """Return top-N movie recommendations for a given movie ID."""
     artifacts = load_recommendation_artifacts()
 
     recommendations = recommend_hybrid_by_movie_id(

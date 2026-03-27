@@ -46,6 +46,7 @@ app.layout = html.Div(
     Input("movie-dropdown", "search_value"),
 )
 def update_movie_dropdown(search_value):
+    """Updates the dropdown bar with given search value."""
     if not search_value or not search_value.strip():
         return no_update
 
@@ -58,6 +59,7 @@ def update_movie_dropdown(search_value):
     prevent_initial_call=True,
 )
 def show_recommendations(selected_movie_id):
+    """Shows the recommendations for the  selected movie, using recommend_for_movie_id."""
     if selected_movie_id is None:
         return html.Div(
             "Choose a movie from the search results to see recommendations.",
