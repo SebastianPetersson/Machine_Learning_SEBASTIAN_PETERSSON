@@ -20,7 +20,6 @@ def clean_text(text):
 
 def prepare_movies_for_search(movies):
     """Prepare a movies Dataframe for title-based searches.
-    
     Splits title-column into 'release_year' and 'title_clean'."""
     movies = movies.copy()
     movies["release_year"] = movies["title"].str.extract(r"\((\d{4})\)$")
