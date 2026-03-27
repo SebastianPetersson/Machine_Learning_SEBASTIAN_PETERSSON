@@ -10,6 +10,7 @@ ENV_PATH = Path(__file__).resolve().parents[1] / ".env"
 load_dotenv(ENV_PATH)
 
 def get_tmdb_headers():
+    """Uses TMDB_ACCESS_TOKEN to return TMDB API headers, or None if missing. """
     token = os.getenv("TMDB_ACCESS_TOKEN")
     if not token:
         return None
@@ -21,6 +22,8 @@ def get_tmdb_headers():
 
 @lru_cache(maxsize=2048)
 def get_poster_url(tmdb_id):
+    """Return the TMDB poster URL for a movie, or None if unavailable."""
+
     if tmdb_id is None:
         return None
 
