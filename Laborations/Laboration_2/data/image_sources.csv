@@ -1,0 +1,12 @@
+filename,class_target,role,image_description,source_url,source_site,license,notes
+zebra_pos_1.jpg,zebra,positive,zebra standing in grass field in profile,https://www.pexels.com/photo/zebra-in-grass-field-7558214/,Pexels,,main positive example
+zebra_neg_1.jpg,zebra,negative,donkey standing in grass field in profile,https://www.pexels.com/photo/donkey-standing-on-grassy-lawn-9542225/,Pexels,,negative example
+zebra_neg_2.jpg,zebra,negative,Tiger with black and white stripes in profile.,https://www.pexels.com/photo/majestic-white-tiger-striding-in-lush-greenery-31447782/,Pexels,,negative example
+zebra_neg_3.jpg,zebra,negative,Horse in field,https://www.pexels.com/photo/a-horse-on-the-grass-15008068/,Pexels,,negative example
+school_bus_pos_1.jpg,school_bus,positive,Yellow school bus in slight profile,https://www.pexels.com/photo/yellow-school-bus-19760978/,Pexels,,main positive example
+school_bus_neg_1.jpg,school_bus,negative,Rusty normal bus in profile,https://www.pexels.com/photo/colorful-indian-bus-on-rainy-urban-street-33332023/,Pexels,,negative example
+school_bus_neg_2.jpg,school_bus,negative,Yellow car in profile,https://www.pexels.com/photo/classic-chevrolet-chevette-in-garage-18325796/,Pexels,,negative example
+cellular_telephone_pos_1.jpg,cellular_telephone,positive,Nokia 3310,https://www.pexels.com/photo/a-nokia-3310-cellular-phone-19335258/,Pexels,,positive example
+cellular_telephone_neg_1.jpg,cellular_telephone,negative,Remote control for AC,https://www.pexels.com/photo/remote-control-of-air-conditioner-25525671/,Pexels,,negative example
+cellular_telephone_neg_2.jpg,cellular_telephone,negative,drone controller,https://www.pexels.com/photo/drone-controller-3861803/,Pexels,,negative example
+pikachu_pos_1.jpg,pikachu,ood,Pikachu plush toy,https://www.pexels.com/photo/cute-pikachu-plush-toy-on-rock-outdoors-36495537/,Pexels,,positive example
